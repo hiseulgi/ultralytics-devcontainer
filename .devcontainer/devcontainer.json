@@ -1,0 +1,36 @@
+{
+    "name": "Ultralytics Container",
+    "privileged": true,
+    "remoteUser": "ravi",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "ravi"
+        }
+    },
+    "workspaceFolder": "/home/ws",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws/src,type=bind",
+    "customizations": {
+        "vscode": {
+            "extensions":[
+                "twxs.cmake",
+                "donjayamanne.python-extension-pack",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+    "containerEnv": {
+        "DISPLAY": "unix:0",
+    },
+    "runArgs": [
+        "--net=host",
+        "--ipc=host",
+        "--gpus=all",
+        "-e", "DISPLAY=${env:DISPLAY}"
+    ],
+    "mounts": [
+       "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+       "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "sudo chown -R $(whoami) /home/ws/"
+}
