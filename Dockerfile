@@ -1,4 +1,4 @@
-FROM ultralytics/ultralytics:latest
+FROM ultralytics/ultralytics:8.3.82
 ARG USERNAME=USERNAME
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -37,6 +37,12 @@ RUN apt install -y libopencv-dev python3-opencv
 
 # Needed for imshow in OpenCV
 RUN apt-get update && apt-get install -y libsm6
+
+# Install Python packages
+COPY ./requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r /tmp/requirements.txt
+RUN rm /tmp/requirements.txt
 
 # Set environment variables
 ENV OMP_NUM_THREADS=1
